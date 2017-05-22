@@ -42,8 +42,8 @@
                <div class="col s12">
                     <div class="card-panel ">
                      {% for mes in all_messages %}
-                        {{mes.name}} - {{mes.date}} - {{mes.content}} 
-                        {% if not forloop.last %} <hr>>{% endif %}
+                        <strong>{{mes.name}}</strong> - {{mes.date}} - {{mes.content}} 
+                        {% if not forloop.last %} <hr> {% endif %}
                      {% endfor %}
                     </div>
                </div>

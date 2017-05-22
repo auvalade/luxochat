@@ -5,6 +5,7 @@ import datetime
 from django.core.urlresolvers import reverse
 from .models import Message
 from .forms import AddMessageForm
+from .tasks import *
 
 def index(request):
     response = {}
@@ -16,7 +17,8 @@ def index(request):
             name = form.cleaned_data["name"]
             content = form.cleaned_data["content"]
             date = datetime.datetime.now()
-            Message.objects.create(name=name, content=content, date=date)   
+            message = Message.objects.create(name=name, content=content, date=date)   
+            check_bad_words_async.delay(message.pk,message.content)
             return HttpResponseRedirect(reverse(index))
         else:
             error = True
