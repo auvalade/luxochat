@@ -1,0 +1,41 @@
+version: "3.0"
+services:
+  db: 
+    restart: always
+    image: postgres
+    environment:
+      - POSTGRES_DB=luxochatdb
+      - POSTGRES_USER=luxochatuser
+      - POSTGRES_PASSWORD=luxochatpw
+
+  web:
+    build: 
+      context: .
+    command: ./docker-entry.sh
+    volumes:
+      - .:/code
+    ports:
+      - "8000:8000"
+    depends_on:
+      - db
+      - rabbit
+
+  celery:
+    build: 
+      context: .
+    command: celery -A mysite worker -l info 
+    volumes:
+      - .:/code
+    depends_on:
+      - web
+      - db
+      - rabbit
+
+  rabbit:
+    hostname: rabbit
+    image: rabbitmq:3.6.9
+    environment:
+      - RABBITMQ_DEFAULT_USER=admin
+      - RABBITMQ_DEFAULT_PASS=mypass
+    ports:
+      - "5672:5672" 

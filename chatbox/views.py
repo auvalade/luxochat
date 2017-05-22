@@ -28,5 +28,5 @@ def index(request):
     response['error'] = error 
     response['form'] = form
 
-    response['all_messages'] = Message.objects.all().reverse()
+    response['all_messages'] = Message.objects.all().order_by("-date")
     return render(request, 'index.html', response)
