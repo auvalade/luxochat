@@ -5,7 +5,7 @@ from celery import Celery
 # set the default Django settings module for the 'celery' program.
 os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'mysite.settings')
 
-app = Celery('mysite', broker='amqp://admin:mypass@rabbit:5672//')
+app = Celery('mysite', broker=os.environ.get('BROKER_URL',''))
 
 app.config_from_object('django.conf:settings', namespace='CELERY')
 

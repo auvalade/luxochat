@@ -3,10 +3,7 @@ services:
   db: 
     restart: always
     image: postgres
-    environment:
-      - POSTGRES_DB=luxochatdb
-      - POSTGRES_USER=luxochatuser
-      - POSTGRES_PASSWORD=luxochatpw
+    env_file: .env
 
   web:
     build: 
@@ -19,6 +16,7 @@ services:
     depends_on:
       - db
       - rabbit
+    env_file: .env
 
   celery:
     build: 
@@ -30,6 +28,7 @@ services:
       - web
       - db
       - rabbit
+    env_file: .env
 
   rabbit:
     hostname: rabbit
